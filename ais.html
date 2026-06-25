@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Action Impact Simulator – CLMT | SDG 13</title>
+
+  <!-- Global CSS shared across all pages -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Page-specific CSS for AIS page -->
+  <link rel="stylesheet" href="ais.css" />
+</head>
+
+<body>
+
+  <!-- ===== HEADER & NAV (shared template – do not modify structure) ===== -->
+  <header> 
+    <nav>
+      <h2>
+        <img id="nav-logo" src="images/logo.png" alt="Climate Action Logo"
+          onclick="this.classList.toggle('enlarged')" />
+        Climate Action
+      </h2>
+
+      <ul>
+        <li><a href="splash.html">Splash</a></li>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="ais.html" class="active">Simulator</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="sitemap.html">Sitemap</a></li>
+      </ul>
+
+    </nav>
+  </header>
+  <!-- ===== END HEADER ===== -->
+
+  <!-- Background wrapper – JS changes background image based on impact level -->
+  <div id="ais-wrapper">
+
+    <div id="ais-content">
+
+      <h1>SDG 13 Action Impact Simulator</h1>
+      <p class="ais-subtitle">
+        Choose actions you can take to fight climate change in your daily life.
+        See how your choices add up to real-world environmental impact.
+      </p>
+      <p class="ais-note">Click on the cards to select actions. Your impact score updates automatically.</p>
+
+      <!-- ===== FEEDBACK PANEL ===== -->
+      <div id="feedback-panel" role="region" aria-live="polite" aria-label="Impact score feedback">
+        <h2>Your Impact Score</h2>
+        <div id="score-display">0</div>
+        <div id="impact-level">No actions selected yet</div>
+        <p id="impact-message">Select actions below to calculate your personal climate impact.</p>
+        <button id="btn-reset" onclick="resetAll()">Reset All</button>
+      </div>
+
+      <!-- ===== ACTION CARDS GRID ===== -->
+      <!--
+        Impact point thresholds (defined here and in JS):
+        Low impact:    1 – 7  points  (1–2 actions selected)
+        Medium impact: 8 – 14 points  (3–4 actions selected)
+        High impact:   15+    points  (5+ actions selected)
+      -->
+      <div class="action-grid" id="action-grid">
+
+        <!-- Card 1 -->
+        <div class="action-card" id="card-0" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(0)"
+          onkeydown="handleKey(event, 0)" data-points="4">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1474631245212-32dc3c8310c6?w=400&q=70"
+            alt="Person cycling on a city street instead of driving" />
+          <h3>Use Public Transport or Cycle</h3>
+          <p>Swapping one car journey per day for cycling or public transport can cut your personal carbon footprint by
+            up to 2.4 tonnes of CO₂ per year.</p>
+          <span class="impact-badge">Impact: 4 pts</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="action-card" id="card-1" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(1)"
+          onkeydown="handleKey(event, 1)" data-points="3">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&q=70"
+            alt="Hands sorting recyclable materials into bins" />
+          <h3>Reduce, Reuse &amp; Recycle</h3>
+          <p>Reducing household waste and recycling materials lowers landfill methane emissions and decreases demand for
+            energy-intensive new production.</p>
+          <span class="impact-badge">Impact: 3 pts</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="action-card" id="card-2" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(2)"
+          onkeydown="handleKey(event, 2)" data-points="5">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=400&q=70"
+            alt="Solar panels on a rooftop under a blue sky" />
+          <h3>Switch to Renewable Energy</h3>
+          <p>Choosing a green energy tariff or installing solar panels can eliminate your home's carbon emissions from
+            electricity — one of the highest-impact actions available.</p>
+          <span class="impact-badge">Impact: 5 pts</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="action-card" id="card-3" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(3)"
+          onkeydown="handleKey(event, 3)" data-points="3">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=70"
+            alt="Colourful plant-based meal on a wooden table" />
+          <h3>Eat a More Plant-Based Diet</h3>
+          <p>Cutting red meat and dairy consumption even a few days per week significantly reduces agricultural methane
+            and land-use emissions linked to your diet.</p>
+          <span class="impact-badge">Impact: 3 pts</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="action-card" id="card-4" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(4)"
+          onkeydown="handleKey(event, 4)" data-points="4">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1584824486509-112e4181ff6b?w=400&q=70"
+            alt="Energy-efficient LED light bulbs glowing warmly" />
+          <h3>Cut Home Energy Use</h3>
+          <p>Switching to LED bulbs, reducing heating by 1°C, and unplugging idle devices can reduce household energy
+            bills and carbon output by up to 10% annually.</p>
+          <span class="impact-badge">Impact: 4 pts</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="action-card" id="card-5" role="checkbox" aria-checked="false" tabindex="0" onclick="toggleCard(5)"
+          onkeydown="handleKey(event, 5)" data-points="5">
+          <span class="tick" aria-hidden="true">✔</span>
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=70"
+            alt="Aerial view of a dense green forest canopy" />
+          <h3>Plant Trees &amp; Support Reforestation</h3>
+          <p>Planting or funding trees absorbs CO₂, restores biodiversity, and protects communities from extreme weather
+            events linked to climate change.</p>
+          <span class="impact-badge">Impact: 5 pts</span>
+        </div>
+
+      </div>
+      <!-- END action-grid -->
+
+    </div>
+    <!-- END ais-content -->
+
+  </div>
+  <!-- END ais-wrapper -->
+
+  <!-- ===== FOOTER (shared template – each student updates their own links) ===== -->
+  <footer>
+    <div class="footer-navigation">
+      <a href="pageEditor_ST1.html">Page Editor</a> |
+      <a href="validation_ST1.html">Validation</a> |
+      <a href="accessibility.html">Accessibility</a>
+    </div>
+
+    <p>Page implemented by: Lehan | Role: Student 2 (Splash and AIS)</p>
+
+    <p>© 2026 Climate Action | Protecting Our Planet</p>
+  </footer>
+  <!-- ===== END FOOTER ===== -->
+
+  <!-- Page-specific JavaScript for AIS page -->
+  <script src="ais.js"></script>
+
+</body>
+
+</html>
